@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1676964019429,
+  "lastUpdate": 1676965130787,
   "repoUrl": "https://github.com/chetanladdha/icu",
   "entries": {
     "Benchmark": [
@@ -2158,6 +2158,60 @@ window.BENCHMARK_DATA = {
           {
             "name": "TestIcu_BinarySearch_usekey",
             "value": 3171892.6242,
+            "unit": "ns/iter",
+            "biggerIsBetter": false
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "chetan.laddha@gmail.com",
+            "name": "Chetan Laddha",
+            "username": "chetanladdha"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a9c1c21cbe072db9899a53a36043e3ebe02a0bc7",
+          "message": "Merge branch 'unicode-org:main' into main",
+          "timestamp": "2023-02-21T10:37:07+05:30",
+          "tree_id": "811adba53a48b4f444702294bf9c98c462633c37",
+          "url": "https://github.com/chetanladdha/icu/commit/a9c1c21cbe072db9899a53a36043e3ebe02a0bc7"
+        },
+        "date": 1676965128455,
+        "tool": "ndjson",
+        "benches": [
+          {
+            "name": "TestIcu_KeyGen_null",
+            "value": 262.7286,
+            "unit": "ns/iter",
+            "biggerIsBetter": false
+          },
+          {
+            "name": "TestIcu_qsort_strcoll_null",
+            "value": 14192421.5518,
+            "unit": "ns/iter",
+            "biggerIsBetter": false
+          },
+          {
+            "name": "TestIcu_qsort_usekey",
+            "value": 3049641.5839,
+            "unit": "ns/iter",
+            "biggerIsBetter": false
+          },
+          {
+            "name": "TestIcu_BinarySearch_strcoll_null",
+            "value": 13327217.1021,
+            "unit": "ns/iter",
+            "biggerIsBetter": false
+          },
+          {
+            "name": "TestIcu_BinarySearch_usekey",
+            "value": 3237498.3509,
             "unit": "ns/iter",
             "biggerIsBetter": false
           }
