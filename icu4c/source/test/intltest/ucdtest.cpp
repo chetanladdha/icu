@@ -39,7 +39,7 @@ UnicodeTest::UnicodeTest()
     unknownPropertyNames=new U_NAMESPACE_QUALIFIER Hashtable(errorCode);
     if(U_FAILURE(errorCode)) {
         delete unknownPropertyNames;
-        unknownPropertyNames=NULL;
+        unknownPropertyNames=nullptr;
     }
     // Ignore some property names altogether.
     for(int32_t i=0; i<UPRV_LENGTHOF(ignorePropNames); ++i) {
@@ -93,7 +93,7 @@ getTokenIndex(const char *const tokens[], int32_t countTokens, const char *s) {
     s=u_skipWhitespace(s);
     for(i=0; i<countTokens; ++i) {
         t=tokens[i];
-        if(t!=NULL) {
+        if(t!=nullptr) {
             for(j=0;; ++j) {
                 if(t[j]!=0) {
                     if(s[j]!=t[j]) {
@@ -172,7 +172,7 @@ derivedPropsLineFn(void *context,
                    char *fields[][2], int32_t /* fieldCount */,
                    UErrorCode *pErrorCode)
 {
-    UnicodeTest *me=(UnicodeTest *)context;
+    UnicodeTest *me=static_cast<UnicodeTest*>(context);
     uint32_t start, end;
     int32_t i;
 
@@ -187,7 +187,7 @@ derivedPropsLineFn(void *context,
     if(i<0) {
         UnicodeString propName(fields[1][0], (int32_t)(fields[1][1]-fields[1][0]));
         propName.trim();
-        if(me->unknownPropertyNames->find(propName)==NULL) {
+        if(me->unknownPropertyNames->find(propName)==nullptr) {
             UErrorCode errorCode=U_ZERO_ERROR;
             me->unknownPropertyNames->puti(propName, 1, errorCode);
             me->errln("UnicodeTest warning: unknown property name '%s' in DerivedCoreProperties.txt or DerivedNormalizationProps.txt\n", fields[1][0]);
@@ -212,7 +212,7 @@ void UnicodeTest::TestAdditionalProperties() {
     }
 
     char path[500];
-    if(getUnidataPath(path) == NULL) {
+    if(getUnidataPath(path) == nullptr) {
         errln("unable to find path to source/data/unidata/");
         return;
     }
@@ -240,7 +240,7 @@ void UnicodeTest::TestAdditionalProperties() {
     uint32_t i;
     UChar32 start, end;
 
-    // test all TRUE properties
+    // test all true properties
     for(i=0; i<UPRV_LENGTHOF(derivedPropsNames); ++i) {
         rangeCount=derivedProps[i].getRangeCount();
         for(range=0; range<rangeCount && numErrors[i]<MAX_ERRORS; ++range) {
@@ -248,7 +248,7 @@ void UnicodeTest::TestAdditionalProperties() {
             end=derivedProps[i].getRangeEnd(range);
             for(; start<=end; ++start) {
                 if(!u_hasBinaryProperty(start, derivedPropsIndex[i])) {
-                    dataerrln("UnicodeTest error: u_hasBinaryProperty(U+%04lx, %s)==FALSE is wrong", start, derivedPropsNames[i]);
+                    dataerrln("UnicodeTest error: u_hasBinaryProperty(U+%04lx, %s)==false is wrong", start, derivedPropsNames[i]);
                     if(++numErrors[i]>=MAX_ERRORS) {
                       dataerrln("Too many errors, moving to the next test");
                       break;
@@ -263,7 +263,7 @@ void UnicodeTest::TestAdditionalProperties() {
         derivedProps[i].complement();
     }
 
-    // test all FALSE properties
+    // test all false properties
     for(i=0; i<UPRV_LENGTHOF(derivedPropsNames); ++i) {
         rangeCount=derivedProps[i].getRangeCount();
         for(range=0; range<rangeCount && numErrors[i]<MAX_ERRORS; ++range) {
@@ -271,7 +271,7 @@ void UnicodeTest::TestAdditionalProperties() {
             end=derivedProps[i].getRangeEnd(range);
             for(; start<=end; ++start) {
                 if(u_hasBinaryProperty(start, derivedPropsIndex[i])) {
-                    errln("UnicodeTest error: u_hasBinaryProperty(U+%04lx, %s)==TRUE is wrong\n", start, derivedPropsNames[i]);
+                    errln("UnicodeTest error: u_hasBinaryProperty(U+%04lx, %s)==true is wrong\n", start, derivedPropsNames[i]);
                     if(++numErrors[i]>=MAX_ERRORS) {
                       errln("Too many errors, moving to the next test");
                       break;
@@ -351,7 +351,7 @@ void UnicodeTest::TestConsistency() {
     UnicodeSet set1, set2;
     if (nfcImpl->getCanonStartSet(0x49, set1)) {
         /* enumerate all characters that are plausible to be latin letters */
-        for(UChar start=0xa0; start<0x2000; ++start) {
+        for(char16_t start=0xa0; start<0x2000; ++start) {
             UnicodeString decomp=nfd->normalize(UnicodeString(start), errorCode);
             if(decomp.length()>1 && decomp[0]==0x49) {
                 set2.add(start);
@@ -365,9 +365,9 @@ void UnicodeTest::TestConsistency() {
         // because the new internal normalization functions are in C++.
         //compareUSets(set1, set2,
         //             "[canon start set of 0049]", "[all c with canon decomp with 0049]",
-        //             TRUE);
+        //             true);
     } else {
-        errln("NFC.getCanonStartSet() returned FALSE");
+        errln("NFC.getCanonStartSet() returned false");
     }
 #endif
 }
@@ -402,16 +402,16 @@ void UnicodeTest::TestPatternProperties() {
         }
     }
     compareUSets(syn_pp, syn_prop,
-                 "PatternProps.isSyntax()", "[:Pattern_Syntax:]", TRUE);
+                 "PatternProps.isSyntax()", "[:Pattern_Syntax:]", true);
     compareUSets(syn_pp, syn_list,
-                 "PatternProps.isSyntax()", "[Pattern_Syntax ranges]", TRUE);
+                 "PatternProps.isSyntax()", "[Pattern_Syntax ranges]", true);
     compareUSets(ws_pp, ws_prop,
-                 "PatternProps.isWhiteSpace()", "[:Pattern_White_Space:]", TRUE);
+                 "PatternProps.isWhiteSpace()", "[:Pattern_White_Space:]", true);
     compareUSets(ws_pp, ws_list,
-                 "PatternProps.isWhiteSpace()", "[Pattern_White_Space ranges]", TRUE);
+                 "PatternProps.isWhiteSpace()", "[Pattern_White_Space ranges]", true);
     compareUSets(syn_ws_pp, syn_ws_prop,
                  "PatternProps.isSyntaxOrWhiteSpace()",
-                 "[[:Pattern_Syntax:][:Pattern_White_Space:]]", TRUE);
+                 "[[:Pattern_Syntax:][:Pattern_White_Space:]]", true);
 }
 
 // So far only minimal port of Java & cucdtst.c compareUSets().
@@ -548,11 +548,11 @@ void UnicodeTest::TestEmojiProperties() {
 
 namespace {
 
-UBool hbp(const UChar *s, int32_t length, UProperty which) {
+UBool hbp(const char16_t *s, int32_t length, UProperty which) {
     return u_stringHasBinaryProperty(s, length, which);
 }
 
-UBool hbp(const UChar *s, UProperty which) {
+UBool hbp(const char16_t *s, UProperty which) {
     return u_stringHasBinaryProperty(s, -1, which);
 }
 

@@ -49,6 +49,7 @@ keyTypeData:table(nofallback){
         lw{""}
         m0{""}
         measure{"ms"}
+        mu{""}
         numbers{"nu"}
         rg{""}
         s0{""}
@@ -391,6 +392,7 @@ keyTypeData:table(nofallback){
             shp{""}
             sit{""}
             skk{""}
+            sle{""}
             sll{""}
             sos{""}
             srd{""}
@@ -616,6 +618,11 @@ keyTypeData:table(nofallback){
             metric{""}
             ussystem{""}
         }
+        mu{
+            celsius{""}
+            fahrenhe{""}
+            kelvin{""}
+        }
         numbers{
             adlm{""}
             ahom{""}
@@ -656,6 +663,7 @@ keyTypeData:table(nofallback){
             jpanfin{""}
             jpanyear{""}
             kali{""}
+            kawi{""}
             khmr{""}
             knda{""}
             lana{""}
@@ -677,6 +685,7 @@ keyTypeData:table(nofallback){
             mymr{""}
             mymrshan{""}
             mymrtlng{""}
+            nagm{""}
             native{""}
             newa{""}
             nkoo{""}

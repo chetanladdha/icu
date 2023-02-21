@@ -187,10 +187,10 @@ private:
     void _init(int32_t initialCapacity, UErrorCode &status);
 
     // Disallow
-    UVector32(const UVector32&);
+    UVector32(const UVector32&) = delete;
 
     // Disallow
-    UVector32& operator=(const UVector32&);
+    UVector32& operator=(const UVector32&) = delete;
 
 
     //  API Functions for Stack operations.
@@ -234,7 +234,7 @@ inline void UVector32::addElement(int32_t elem, UErrorCode &status) {
 
 inline int32_t *UVector32::reserveBlock(int32_t size, UErrorCode &status) {
     if (ensureCapacity(count+size, status) == false) {
-        return NULL;
+        return nullptr;
     }
     int32_t  *rp = elements+count;
     count += size;

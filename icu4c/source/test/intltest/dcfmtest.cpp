@@ -88,7 +88,7 @@ void DecimalFormatTest::runIndexedTest( int32_t index, UBool exec, const char* &
 } UPRV_BLOCK_MACRO_END
 
 #define DF_ASSERT(expr) UPRV_BLOCK_MACRO_BEGIN { \
-    if ((expr)==FALSE) { \
+    if ((expr)==false) { \
         errln("DecimalFormatTest failure at line %d.\n", __LINE__); \
     } \
 } UPRV_BLOCK_MACRO_END
@@ -109,7 +109,7 @@ void DecimalFormatTest::runIndexedTest( int32_t index, UBool exec, const char* &
 } UPRV_BLOCK_MACRO_END
 
 #define DF_ASSERT_L(expr, line) UPRV_BLOCK_MACRO_BEGIN { \
-    if ((expr)==FALSE) { \
+    if ((expr)==false) { \
         errln("DecimalFormatTest failure at line %d, from %d.", __LINE__, (line)); \
         return; \
     } \
@@ -213,12 +213,12 @@ void DecimalFormatTest::DataDrivenTests() {
     //  Open and read the test data file.
     //
     srcPath=getPath(tdd, "dcfmtest.txt");
-    if(srcPath==NULL) {
+    if(srcPath==nullptr) {
         return; /* something went wrong, error already output */
     }
 
     int32_t    len;
-    UChar *testData = ReadAndConvertFile(srcPath, len, "utf-8", status);
+    char16_t *testData = ReadAndConvertFile(srcPath, len, "utf-8", status);
     if (U_FAILURE(status)) {
         return; /* something went wrong, error already output */
     }
@@ -226,7 +226,7 @@ void DecimalFormatTest::DataDrivenTests() {
     //
     //  Put the test data into a UnicodeString
     //
-    UnicodeString testString(FALSE, testData, len);
+    UnicodeString testString(false, testData, len);
 
     RegexMatcher    parseLineMat(UnicodeString(
             "(?i)\\s*parse\\s+"
@@ -451,12 +451,12 @@ void DecimalFormatTest::execFormatTest(int32_t lineNum,
             typeStr = "Formattable";
             Formattable fmtbl;
             fmtbl.setDecimalNumber(spInput, status);
-            fmtr.format(fmtbl, result, NULL, status);
+            fmtr.format(fmtbl, result, nullptr, status);
         }
         break;
     case kStringPiece:
         typeStr = "StringPiece";
-        fmtr.format(spInput, result, NULL, status);
+        fmtr.format(spInput, result, nullptr, status);
         break;
     }
 

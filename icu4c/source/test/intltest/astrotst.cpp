@@ -23,7 +23,7 @@
 
 #define CASE(id,test) case id: name = #test; if (exec) { logln(#test "---"); logln((UnicodeString)""); test(); } break
 
-AstroTest::AstroTest(): astro(NULL), gc(NULL) {
+AstroTest::AstroTest(): astro(nullptr), gc(nullptr) {
 }
 
 void AstroTest::runIndexedTest( int32_t index, UBool exec, const char* &name, char* /*par*/ )
@@ -55,7 +55,7 @@ void AstroTest::runIndexedTest( int32_t index, UBool exec, const char* &name, ch
 void AstroTest::initAstro(UErrorCode &status) {
   if(U_FAILURE(status)) return;
 
-  if((astro != NULL) || (gc != NULL)) {
+  if((astro != nullptr) || (gc != nullptr)) {
     dataerrln("Err: initAstro() called twice!");
     closeAstro(status);
     if(U_SUCCESS(status)) {
@@ -70,13 +70,13 @@ void AstroTest::initAstro(UErrorCode &status) {
 }
 
 void AstroTest::closeAstro(UErrorCode &/*status*/) {
-  if(astro != NULL) {
+  if(astro != nullptr) {
     delete astro;
-    astro = NULL;
+    astro = nullptr;
   }
-  if(gc != NULL) {
+  if(gc != nullptr) {
     delete gc;
-    gc = NULL;
+    gc = nullptr;
   }
 }
 
@@ -190,15 +190,15 @@ void AstroTest::TestCoverage(void) {
     logln((UnicodeString)"   equ ecl: " + (anAstro->eclipticToEquatorial(eq,ecl)).toString());
     logln((UnicodeString)"   equ long: " + (anAstro->eclipticToEquatorial(eq, eclLong)).toString());
     logln((UnicodeString)"   horiz: " + (anAstro->eclipticToHorizon(hor, eclLong)).toString());
-    logln((UnicodeString)"   sunrise: " + (anAstro->getSunRiseSet(TRUE)));
-    logln((UnicodeString)"   sunset: " + (anAstro->getSunRiseSet(FALSE)));
+    logln((UnicodeString)"   sunrise: " + (anAstro->getSunRiseSet(true)));
+    logln((UnicodeString)"   sunset: " + (anAstro->getSunRiseSet(false)));
     logln((UnicodeString)"   moon phase: " + anAstro->getMoonPhase());
-    logln((UnicodeString)"   moonrise: " + (anAstro->getMoonRiseSet(TRUE)));
-    logln((UnicodeString)"   moonset: " + (anAstro->getMoonRiseSet(FALSE)));
-    logln((UnicodeString)"   prev summer solstice: " + (anAstro->getSunTime(CalendarAstronomer::SUMMER_SOLSTICE(), FALSE)));
-    logln((UnicodeString)"   next summer solstice: " + (anAstro->getSunTime(CalendarAstronomer::SUMMER_SOLSTICE(), TRUE)));
-    logln((UnicodeString)"   prev full moon: " + (anAstro->getMoonTime(CalendarAstronomer::FULL_MOON(), FALSE)));
-    logln((UnicodeString)"   next full moon: " + (anAstro->getMoonTime(CalendarAstronomer::FULL_MOON(), TRUE)));
+    logln((UnicodeString)"   moonrise: " + (anAstro->getMoonRiseSet(true)));
+    logln((UnicodeString)"   moonset: " + (anAstro->getMoonRiseSet(false)));
+    logln((UnicodeString)"   prev summer solstice: " + (anAstro->getSunTime(CalendarAstronomer::SUMMER_SOLSTICE(), false)));
+    logln((UnicodeString)"   next summer solstice: " + (anAstro->getSunTime(CalendarAstronomer::SUMMER_SOLSTICE(), true)));
+    logln((UnicodeString)"   prev full moon: " + (anAstro->getMoonTime(CalendarAstronomer::FULL_MOON(), false)));
+    logln((UnicodeString)"   next full moon: " + (anAstro->getMoonTime(CalendarAstronomer::FULL_MOON(), true)));
   }
 
   delete myastro2;
@@ -296,10 +296,10 @@ void AstroTest::TestSunriseTimes(void) {
   for (int32_t i=0; i < 30; i++) {
     logln("setDate\n");
     astro3.setDate(cal.getTime(status));
-    logln("getRiseSet(TRUE)\n");
-    UDate sunrise = astro3.getSunRiseSet(TRUE);
-    logln("getRiseSet(FALSE)\n");
-    UDate sunset  = astro3.getSunRiseSet(FALSE);
+    logln("getRiseSet(true)\n");
+    UDate sunrise = astro3.getSunRiseSet(true);
+    logln("getRiseSet(false)\n");
+    UDate sunset  = astro3.getSunRiseSet(false);
     logln("end of getRiseSet\n");
 
     cal2.setTime(cal.getTime(status), status);

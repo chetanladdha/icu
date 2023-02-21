@@ -15,8 +15,9 @@
 ******************************************************************************
 */
 #include "cloctst.h"
-#include <stdlib.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "cintltst.h"
 #include "cmemory.h"
@@ -128,7 +129,7 @@ static const char* const rawData2[LOCALE_INFO_SIZE][LOCALE_SIZE] = {
     /* display name (Catalan) */
     {   "angl\\u00E8s (Estats Units)", "franc\\u00E8s (Fran\\u00E7a)", "catal\\u00E0 (Espanya)", 
     "grec (Gr\\u00E8cia)", "noruec (Noruega, NY)", "xin\\u00E8s (simplificat, Xina)", 
-    "alemany (Alemanya, ordenaci\\u00F3=ordre de la guia telef\\u00F2nica)", "espanyol (ordenaci\\u00F3=ordre tradicional)", "japon\\u00E8s (Jap\\u00F3, calendari=calendari japon\\u00e8s)" },
+    "alemany (Alemanya, ordre=ordre de la guia telef\\u00F2nica)", "espanyol (ordre=ordre tradicional)", "japon\\u00E8s (Jap\\u00F3, calendari=calendari japon\\u00e8s)" },
 
     /* display language (Greek) */
     {
@@ -603,7 +604,7 @@ static void TestSimpleResourceInfo() {
             log_err("  ISO-3 Country code mismatch:  %s versus  %s\n",  austrdup(expected),
                 austrdup(dataTable[CTRY3][i]));
         }
-        sprintf(temp2, "%x", (int)uloc_getLCID(testLocale));
+        snprintf(temp2, sizeof(temp2), "%x", (int)uloc_getLCID(testLocale));
         if (strcmp(temp2, rawData2[LCID][i]) != 0) {
             log_err("LCID mismatch: %s versus %s\n", temp2 , rawData2[LCID][i]);
         }
@@ -752,7 +753,7 @@ static void TestDisplayNames()
             "el_GR" };
         static const char *expect[] = { "Spanish (Calendar=Japanese Calendar, Sort Order=Traditional Sort Order)", /* note sorted order of keywords */
             "espagnol (calendrier=calendrier japonais, ordre de tri=ordre traditionnel)",
-            "espanyol (calendari=calendari japon\\u00e8s, ordenaci\\u00f3=ordre tradicional)",
+            "espanyol (calendari=calendari japon\\u00e8s, ordre=ordre tradicional)",
             "\\u0399\\u03c3\\u03c0\\u03b1\\u03bd\\u03b9\\u03ba\\u03ac (\\u0397\\u03bc\\u03b5\\u03c1\\u03bf\\u03bb\\u03cc\\u03b3\\u03b9\\u03bf=\\u0399\\u03b1\\u03c0\\u03c9\\u03bd\\u03b9\\u03ba\\u03cc \\u03b7\\u03bc\\u03b5\\u03c1\\u03bf\\u03bb\\u03cc\\u03b3\\u03b9\\u03bf, \\u03a3\\u03b5\\u03b9\\u03c1\\u03ac \\u03c4\\u03b1\\u03be\\u03b9\\u03bd\\u03cc\\u03bc\\u03b7\\u03c3\\u03b7\\u03c2=\\u03a0\\u03b1\\u03c1\\u03b1\\u03b4\\u03bf\\u03c3\\u03b9\\u03b1\\u03ba\\u03ae \\u03c3\\u03b5\\u03b9\\u03c1\\u03ac \\u03c4\\u03b1\\u03be\\u03b9\\u03bd\\u03cc\\u03bc\\u03b7\\u03c3\\u03b7\\u03c2)" };
         UChar *expectBuffer;
 
@@ -911,15 +912,15 @@ static void TestGetAvailableLocalesByType() {
     uenum_close(uenum);
 
     uenum = uloc_openAvailableByType(ULOC_AVAILABLE_ONLY_LEGACY_ALIASES, &status);
-    UBool found_he = FALSE;
-    UBool found_iw = FALSE;
+    UBool found_he = false;
+    UBool found_iw = false;
     const char* loc;
     while ((loc = uenum_next(uenum, NULL, &status))) {
         if (uprv_strcmp("he", loc) == 0) {
-            found_he = TRUE;
+            found_he = true;
         }
         if (uprv_strcmp("iw", loc) == 0) {
-            found_iw = TRUE;
+            found_iw = true;
         }
     }
     assertTrue("Should NOT have found he amongst the legacy/alias locales", !found_he);
@@ -927,16 +928,16 @@ static void TestGetAvailableLocalesByType() {
     uenum_close(uenum);
 
     uenum = uloc_openAvailableByType(ULOC_AVAILABLE_WITH_LEGACY_ALIASES, &status);
-    found_he = FALSE;
-    found_iw = FALSE;
+    found_he = false;
+    found_iw = false;
     const UChar* uloc; // test the UChar conversion
     int32_t count = 0;
     while ((uloc = uenum_unext(uenum, NULL, &status))) {
         if (u_strcmp(u"iw", uloc) == 0) {
-            found_iw = TRUE;
+            found_iw = true;
         }
         if (u_strcmp(u"he", uloc) == 0) {
-            found_he = TRUE;
+            found_he = true;
         }
         count++;
     }
@@ -2606,7 +2607,7 @@ static void TestDisplayKeywordValues(void){
           {0x006F, 0x0072, 0x0064, 0x0065, 0x006E, 0x0020, 0x0064, 0x0065, 0x0020, 0x006C, 0x0069, 0x0073, 0x0074, 0x00ED, 0x006E, 0x0020, 0x0074, 0x0065, 0x006C, 0x0065, 0x0066, 0x00F3, 0x006E, 0x0069, 0x0063, 0x006F, 0x0000}
         },
         { "es_ES@collation=traditional","de", 
-          {0x0054, 0x0072, 0x0061, 0x0064, 0x0069, 0x0074, 0x0069, 0x006f, 0x006e, 0x0065, 0x006c, 0x006c, 0x0065, 0x0020, 0x0053, 0x006f, 0x0072, 0x0074, 0x0069, 0x0065, 0x0072, 0x0072, 0x0065, 0x0067, 0x0065, 0x006c, 0x006e, 0x0000}
+          {0x0054, 0x0072, 0x0061, 0x0064, 0x0069, 0x0074, 0x0069, 0x006f, 0x006e, 0x0065, 0x006c, 0x006c, 0x0065, 0x0020, 0x0053, 0x006f, 0x0072, 0x0074, 0x0069, 0x0065, 0x0072, 0x0075, 0x006E, 0x0067, 0x0000}
         },
         { "ja_JP@calendar=japanese",    "de", 
            {0x004a, 0x0061, 0x0070, 0x0061, 0x006e, 0x0069, 0x0073, 0x0063, 0x0068, 0x0065, 0x0072, 0x0020, 0x004b, 0x0061, 0x006c, 0x0065, 0x006e, 0x0064, 0x0065, 0x0072, 0x0000}
@@ -3240,9 +3241,9 @@ static UBool isLocaleAvailable(UResourceBundle* resIndex, const char* loc){
     int32_t len = 0;
     ures_getStringByKey(resIndex, loc,&len, &status);
     if(U_FAILURE(status)){
-        return FALSE; 
+        return false; 
     }
-    return TRUE;
+    return true;
 }
 
 static void TestCalendar() {
@@ -4180,7 +4181,7 @@ const char* const full_data[][3] = {
     "pa_PK"
   }, {
     "pap",
-    "pap_Latn_AW",
+    "pap_Latn_CW",
     "pap"
   }, {
     "pau",
@@ -6248,7 +6249,7 @@ static void TestToLanguageTag(void) {
         langtag[0] = 0;
         expected = locale_to_langtag[i][1];
 
-        len = uloc_toLanguageTag(inloc, langtag, sizeof(langtag), FALSE, &status);
+        len = uloc_toLanguageTag(inloc, langtag, sizeof(langtag), false, &status);
         (void)len;    /* Suppress set but not used warning. */
         if (U_FAILURE(status)) {
             if (expected != NULL) {
@@ -6270,7 +6271,7 @@ static void TestToLanguageTag(void) {
         langtag[0] = 0;
         expected = locale_to_langtag[i][2];
 
-        len = uloc_toLanguageTag(inloc, langtag, sizeof(langtag), TRUE, &status);
+        len = uloc_toLanguageTag(inloc, langtag, sizeof(langtag), true, &status);
         if (U_FAILURE(status)) {
             if (expected != NULL) {
                 log_data_err("Error returned by uloc_toLanguageTag {strict} for locale id [%s] - error: %s Are you missing data?\n",
@@ -6302,7 +6303,7 @@ static void TestBug20132(void) {
      * instead require several iterations before getting the correct size. */
 
     status = U_ZERO_ERROR;
-    len = uloc_toLanguageTag(inloc, langtag, 1, FALSE, &status);
+    len = uloc_toLanguageTag(inloc, langtag, 1, false, &status);
 
     if (U_FAILURE(status) && status != U_BUFFER_OVERFLOW_ERROR) {
         log_data_err("Error returned by uloc_toLanguageTag for locale id [%s] - error: %s Are you missing data?\n",
@@ -6314,7 +6315,7 @@ static void TestBug20132(void) {
     }
 
     status = U_ZERO_ERROR;
-    len = uloc_toLanguageTag(inloc, langtag, expected_len, FALSE, &status);
+    len = uloc_toLanguageTag(inloc, langtag, expected_len, false, &status);
 
     if (U_FAILURE(status)) {
         log_data_err("Error returned by uloc_toLanguageTag for locale id [%s] - error: %s Are you missing data?\n",
@@ -6481,7 +6482,7 @@ static void TestLangAndRegionCanonicalize(void) {
         status = U_ZERO_ERROR;
         const char* input = langtag_to_canonical[i].input;
         uloc_forLanguageTag(input, locale, sizeof(locale), NULL, &status);
-        uloc_toLanguageTag(locale, canonical, sizeof(canonical), TRUE, &status);
+        uloc_toLanguageTag(locale, canonical, sizeof(canonical), true, &status);
         if (U_FAILURE(status)) {
             log_err_status(status, "Error returned by uloc_forLanguageTag or uloc_toLanguageTag "
                            "for language tag [%s] - error: %s\n", input, u_errorName(status));
@@ -7216,6 +7217,10 @@ static void TestCDefaultLocale() {
     char *env_var = getenv("LANG");
     if (env_var == NULL) {
       log_verbose("Skipping TestCDefaultLocale test, as the LANG variable is not set.");
+      return;
+    }
+    if (getenv("LC_ALL") != NULL) {
+      log_verbose("Skipping TestCDefaultLocale test, as the LC_ALL variable is set.");
       return;
     }
     if ((strcmp(env_var, "C") == 0 || strcmp(env_var, "C.UTF-8") == 0) && strcmp(defaultLocale, "en_US_POSIX") != 0) {

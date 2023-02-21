@@ -202,7 +202,7 @@ public: // package
      * Clone the specified calendar, and determine its earliest supported date
      * by setting the extended year to the minimum value.
      * @param cal Calendar (will be cloned)
-     * @param isGregorian output: returns 'TRUE' if the calendar's class is GregorianCalendar
+     * @param isGregorian output: returns 'true' if the calendar's class is GregorianCalendar
      * @param status error code
      */
     static UDate minDateOfCalendar(const Calendar& cal, UBool &isGregorian, UErrorCode& status);
@@ -211,7 +211,7 @@ public: // package
      * Construct a calendar of the specified locale, and determine its earliest supported date
      * by setting the extended year to the minimum value.
      * @param locale locale of calendar to check
-     * @param isGregorian output: returns 'TRUE' if the calendar's class is GregorianCalendar
+     * @param isGregorian output: returns 'true' if the calendar's class is GregorianCalendar
      * @param status error code
      */
     static UDate minDateOfCalendar(const Locale& locale, UBool &isGregorian, UErrorCode& status);
@@ -257,6 +257,82 @@ public: // package
     void TestAddAcrossZoneTransition(void);
 
     void TestChineseCalendarMapping(void);
+
+    void TestBasicConversionGregorian(void);
+    void TestBasicConversionISO8601(void);
+    void TestBasicConversionJapanese(void);
+    void TestBasicConversionBuddhist(void);
+    void TestBasicConversionTaiwan(void);
+    void TestBasicConversionPersian(void);
+    void TestBasicConversionIslamic(void);
+    void TestBasicConversionIslamicTBLA(void);
+    void TestBasicConversionIslamicCivil(void);
+    void TestBasicConversionIslamicRGSA(void);
+    void TestBasicConversionIslamicUmalqura(void);
+    void TestBasicConversionHebrew(void);
+    void TestBasicConversionChinese(void);
+    void TestBasicConversionDangi(void);
+    void TestBasicConversionIndian(void);
+    void TestBasicConversionCoptic(void);
+    void TestBasicConversionEthiopic(void);
+    void TestBasicConversionEthiopicAmeteAlem(void);
+
+    void AsssertCalendarFieldValue(
+        Calendar* cal, double time, const char* type,
+        int32_t era, int32_t year, int32_t month, int32_t week_of_year,
+        int32_t week_of_month, int32_t date, int32_t day_of_year, int32_t day_of_week,
+        int32_t day_of_week_in_month, int32_t am_pm, int32_t hour, int32_t hour_of_day,
+        int32_t minute, int32_t second, int32_t millisecond, int32_t zone_offset,
+        int32_t dst_offset, int32_t year_woy, int32_t dow_local, int32_t extended_year,
+        int32_t julian_day, int32_t milliseconds_in_day, int32_t is_leap_month);
+
+    void TestChineseCalendarMonthInSpecialYear(void);
+    void TestGregorianCalendarInTemporalLeapYear(void);
+    void TestChineseCalendarInTemporalLeapYear(void);
+    void TestDangiCalendarInTemporalLeapYear(void);
+    void TestHebrewCalendarInTemporalLeapYear(void);
+    void TestIslamicCalendarInTemporalLeapYear(void);
+    void TestIslamicCivilCalendarInTemporalLeapYear(void);
+    void TestIslamicUmalquraCalendarInTemporalLeapYear(void);
+    void TestIslamicRGSACalendarInTemporalLeapYear(void);
+    void TestIslamicTBLACalendarInTemporalLeapYear(void);
+    void TestPersianCalendarInTemporalLeapYear(void);
+    void TestIndianCalendarInTemporalLeapYear(void);
+    void TestTaiwanCalendarInTemporalLeapYear(void);
+    void TestJapaneseCalendarInTemporalLeapYear(void);
+    void TestBuddhistCalendarInTemporalLeapYear(void);
+    void TestCopticCalendarInTemporalLeapYear(void);
+    void TestEthiopicCalendarInTemporalLeapYear(void);
+    void TestEthiopicAmeteAlemCalendarInTemporalLeapYear(void);
+
+    void TestChineseCalendarGetTemporalMonthCode(void);
+    void TestDangiCalendarGetTemporalMonthCode(void);
+    void TestHebrewCalendarGetTemporalMonthCode(void);
+    void TestCopticCalendarGetTemporalMonthCode(void);
+    void TestEthiopicCalendarGetTemporalMonthCode(void);
+    void TestEthiopicAmeteAlemCalendarGetTemporalMonthCode(void);
+
+    void TestGregorianCalendarSetTemporalMonthCode(void);
+    void TestChineseCalendarSetTemporalMonthCode(void);
+    void TestHebrewCalendarSetTemporalMonthCode(void);
+    void TestCopticCalendarSetTemporalMonthCode(void);
+    void TestEthiopicCalendarSetTemporalMonthCode(void);
+
+    void TestMostCalendarsOrdinalMonthSet(void);
+    void TestChineseCalendarOrdinalMonthSet(void);
+    void TestDangiCalendarOrdinalMonthSet(void);
+    void TestHebrewCalendarOrdinalMonthSet(void);
+
+    void TestCalendarAddOrdinalMonth(void);
+    void TestCalendarRollOrdinalMonth(void);
+    void TestLimitsOrdinalMonth(void);
+    void TestActualLimitsOrdinalMonth(void);
+
+    void RunChineseCalendarInTemporalLeapYearTest(Calendar* cal);
+    void RunIslamicCalendarInTemporalLeapYearTest(Calendar* cal);
+    void Run366DaysIsLeapYearCalendarInTemporalLeapYearTest(Calendar* cal);
+    void RunChineseCalendarGetTemporalMonthCode(Calendar* cal);
+    void RunCECalendarGetTemporalMonthCode(Calendar* cal);
 };
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

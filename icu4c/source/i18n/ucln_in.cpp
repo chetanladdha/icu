@@ -39,13 +39,13 @@ static UBool U_CALLCONV i18n_cleanup(void)
         if (gCleanupFunctions[libType])
         {
             gCleanupFunctions[libType]();
-            gCleanupFunctions[libType] = NULL;
+            gCleanupFunctions[libType] = nullptr;
         }
     }
 #if !UCLN_NO_AUTO_CLEANUP && (defined(UCLN_AUTO_ATEXIT) || defined(UCLN_AUTO_LOCAL))
     ucln_unRegisterAutomaticCleanup();
 #endif
-    return TRUE;
+    return true;
 }
 
 void ucln_i18n_registerCleanup(ECleanupI18NType type,

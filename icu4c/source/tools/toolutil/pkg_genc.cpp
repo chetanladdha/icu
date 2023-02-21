@@ -252,11 +252,11 @@ checkAssemblyHeaderName(const char* optAssembly) {
         if (uprv_strcmp(optAssembly, assemblyHeader[idx].name) == 0) {
             assemblyHeaderIndex = idx;
             hexType = assemblyHeader[idx].hexType; /* set the hex type */
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 
@@ -289,7 +289,7 @@ writeAssemblyCode(
     size_t i, length, count;
 
     in=T_FileStream_open(filename, "rb");
-    if(in==NULL) {
+    if(in==nullptr) {
         fprintf(stderr, "genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
@@ -304,25 +304,24 @@ writeAssemblyCode(
         ".S",
         optFilename);
     out=T_FileStream_open(buffer.chars, "w");
-    if(out==NULL) {
+    if(out==nullptr) {
         fprintf(stderr, "genccode: unable to open output file %s\n", buffer.chars);
         exit(U_FILE_ACCESS_ERROR);
     }
 
-    if (outFilePath != NULL) {
+    if (outFilePath != nullptr) {
         if (uprv_strlen(buffer.chars) >= outFilePathCapacity) {
             fprintf(stderr, "genccode: filename too long\n");
             exit(U_ILLEGAL_ARGUMENT_ERROR);
         }
         uprv_strcpy(outFilePath, buffer.chars);
+#if defined (WINDOWS_WITH_GNUC) && U_PLATFORM != U_PF_CYGWIN
+        /* Need to fix the file separator character when using MinGW. */
+        swapFileSepChar(outFilePath, U_FILE_SEP_CHAR, '/');
+#endif
     }
 
-#if defined (WINDOWS_WITH_GNUC) && U_PLATFORM != U_PF_CYGWIN
-    /* Need to fix the file separator character when using MinGW. */
-    swapFileSepChar(outFilePath, U_FILE_SEP_CHAR, '/');
-#endif
-
-    if(optEntryPoint != NULL) {
+    if(optEntryPoint != nullptr) {
         uprv_strcpy(entry, optEntryPoint);
         uprv_strcat(entry, "_dat");
     }
@@ -390,6 +389,7 @@ U_CAPI void U_EXPORT2
 writeCCode(
         const char *filename,
         const char *destdir,
+        const char *optEntryPoint,
         const char *optName,
         const char *optFilename,
         char *outFilePath,
@@ -400,12 +400,12 @@ writeCCode(
     size_t i, length, count;
 
     in=T_FileStream_open(filename, "rb");
-    if(in==NULL) {
+    if(in==nullptr) {
         fprintf(stderr, "genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
 
-    if(optName != NULL) { /* prepend  'icudt28_' */
+    if(optName != nullptr) { /* prepend  'icudt28_' */
         // +2 includes the _ and the NUL
         if (uprv_strlen(optName) + 2 > sizeof(entry)) {
             fprintf(stderr, "genccode: entry name too long (long filename?)\n");
@@ -427,18 +427,27 @@ writeCCode(
         ".c",
         optFilename);
 
-    if (outFilePath != NULL) {
+    if (outFilePath != nullptr) {
         if (uprv_strlen(buffer) >= outFilePathCapacity) {
             fprintf(stderr, "genccode: filename too long\n");
             exit(U_ILLEGAL_ARGUMENT_ERROR);
         }
         uprv_strcpy(outFilePath, buffer);
+#if defined (WINDOWS_WITH_GNUC) && U_PLATFORM != U_PF_CYGWIN
+        /* Need to fix the file separator character when using MinGW. */
+        swapFileSepChar(outFilePath, U_FILE_SEP_CHAR, '/');
+#endif
     }
 
     out=T_FileStream_open(buffer, "w");
-    if(out==NULL) {
+    if(out==nullptr) {
         fprintf(stderr, "genccode: unable to open output file %s\n", buffer);
         exit(U_FILE_ACCESS_ERROR);
+    }
+
+    if(optEntryPoint != nullptr) {
+        uprv_strcpy(entry, optEntryPoint);
+        uprv_strcat(entry, "_dat");
     }
 
     /* turn dashes or dots in the entry name into underscores */
@@ -641,9 +650,9 @@ write8str(FileStream *out, uint8_t byte, uint32_t column) {
     char s[8];
 
     if (byte > 7)
-        sprintf(s, "\\x%X", byte);
+        snprintf(s, sizeof(s), "\\x%X", byte);
     else
-        sprintf(s, "\\%X", byte);
+        snprintf(s, sizeof(s), "\\%X", byte);
 
     /* write the value, possibly with comma and newline */
     if(column==MAX_COLUMN) {
@@ -678,7 +687,7 @@ getOutFilename(
     icu::ErrorCode status;
 
     /* copy path */
-    if(destdir!=NULL && *destdir!=0) {
+    if(destdir!=nullptr && *destdir!=0) {
         outFilenameBuilder.append(destdir, status);
         outFilenameBuilder.ensureEndsWithFileSeparator(status);
     } else {
@@ -686,10 +695,10 @@ getOutFilename(
     }
     inFilename=basename;
 
-    if(suffix==NULL) {
+    if(suffix==nullptr) {
         /* the filename does not have a suffix */
         entryNameBuilder.append(inFilename, status);
-        if(optFilename != NULL) {
+        if(optFilename != nullptr) {
             outFilenameBuilder.append(optFilename, status);
         } else {
             outFilenameBuilder.append(inFilename, status);
@@ -715,7 +724,7 @@ getOutFilename(
         outFilenameBuilder.append(inFilename, status);
         entryNameBuilder.append(inFilename, status);
 
-        if(optFilename != NULL) {
+        if(optFilename != nullptr) {
             outFilenameBuilder.truncate(saveOutFilenameLength);
             outFilenameBuilder.append(optFilename, status);
         }
@@ -767,7 +776,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
 #   error "Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
 
-    if(optMatchArch != NULL) {
+    if(optMatchArch != nullptr) {
         filename=optMatchArch;
     } else {
         /* set defaults */
@@ -778,7 +787,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
         *pIsBigEndian=(UBool)(U_IS_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB);
 #elif U_PLATFORM_HAS_WIN32_API
         // Windows always runs in little-endian mode.
-        *pIsBigEndian = FALSE;
+        *pIsBigEndian = false;
 
         // Note: The various _M_<arch> macros are predefined by the MSVC compiler based
         // on the target compilation architecture.
@@ -808,7 +817,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
     }
 
     in=T_FileStream_open(filename, "rb");
-    if(in==NULL) {
+    if(in==nullptr) {
         fprintf(stderr, "genccode: unable to open match-arch file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
@@ -865,7 +874,7 @@ getArchitecture(uint16_t *pCPU, uint16_t *pBits, UBool *pIsBigEndian, const char
      */
     *pBits= *pCPU==IMAGE_FILE_MACHINE_I386 ? 32 : 64;
     /* Windows always runs on little-endian CPUs. */
-    *pIsBigEndian=FALSE;
+    *pIsBigEndian=false;
 #else
 #   error "Unknown platform for CAN_GENERATE_OBJECTS."
 #endif
@@ -1162,7 +1171,7 @@ writeObjectCode(
 #endif
 
     in=T_FileStream_open(filename, "rb");
-    if(in==NULL) {
+    if(in==nullptr) {
         fprintf(stderr, "genccode: unable to open input file %s\n", filename);
         exit(U_FILE_ACCESS_ERROR);
     }
@@ -1178,7 +1187,7 @@ writeObjectCode(
         newSuffix,
         optFilename);
 
-    if (outFilePath != NULL) {
+    if (outFilePath != nullptr) {
         if (uprv_strlen(buffer) >= outFilePathCapacity) {
             fprintf(stderr, "genccode: filename too long\n");
             exit(U_ILLEGAL_ARGUMENT_ERROR);
@@ -1186,7 +1195,7 @@ writeObjectCode(
         uprv_strcpy(outFilePath, buffer);
     }
 
-    if(optEntryPoint != NULL) {
+    if(optEntryPoint != nullptr) {
         uprv_strcpy(entry+entryOffset, optEntryPoint);
         uprv_strcat(entry+entryOffset, "_dat");
     }
@@ -1200,7 +1209,7 @@ writeObjectCode(
 
     /* open the output file */
     out=T_FileStream_open(buffer, "wb");
-    if(out==NULL) {
+    if(out==nullptr) {
         fprintf(stderr, "genccode: unable to open output file %s\n", buffer);
         exit(U_FILE_ACCESS_ERROR);
     }
@@ -1275,7 +1284,7 @@ writeObjectCode(
     /* set the file header */
     objHeader.fileHeader.Machine=cpu;
     objHeader.fileHeader.NumberOfSections=2;
-    objHeader.fileHeader.TimeDateStamp=(DWORD)time(NULL);
+    objHeader.fileHeader.TimeDateStamp=(DWORD)time(nullptr);
     objHeader.fileHeader.PointerToSymbolTable=IMAGE_SIZEOF_FILE_HEADER+2*IMAGE_SIZEOF_SECTION_HEADER+length+size; /* start of symbol table */
     objHeader.fileHeader.NumberOfSymbols=1;
 

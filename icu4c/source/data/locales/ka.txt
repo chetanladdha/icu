@@ -33,6 +33,7 @@ ka{
             }
             patterns{
                 accountingFormat{"#,##0.00 ¤"}
+                accountingFormat%noCurrency{"#,##0.00"}
                 currencyFormat{"#,##0.00 ¤"}
                 decimalFormat{"#,##0.###"}
                 percentFormat{"#,##0%"}
@@ -431,6 +432,12 @@ ka{
                 "d MMM. y",
                 "dd.MM.yy",
                 "{1}, {0}",
+                "{1}, {0}",
+                "{1}, {0}",
+                "{1}, {0}",
+                "{1}, {0}",
+            }
+            DateTimePatterns%atTime{
                 "{1}, {0}",
                 "{1}, {0}",
                 "{1}, {0}",
@@ -1855,5 +1862,24 @@ ka{
         UK{"ბრიტანული"}
         US{"ამერიკული"}
         metric{"მეტრული"}
+    }
+    personNames{
+        nameOrderLocales{
+            givenFirst{
+                "und",
+                "ka",
+            }
+            surnameFirst{
+                "ko",
+                "vi",
+                "yue",
+                "zh",
+            }
+        }
+        namePattern{
+            givenFirst-long-monogram-formal{"{given-monogram}{given2-monogram}{surname-monogram}"}
+            givenFirst-long-monogram-informal{"{given-informal-monogram}{surname-monogram}"}
+            surnameFirst-long-monogram-formal{"{surname-monogram}{given-monogram}{given2-monogram}"}
+        }
     }
 }
